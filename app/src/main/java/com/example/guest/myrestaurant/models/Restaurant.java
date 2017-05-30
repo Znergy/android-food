@@ -1,11 +1,14 @@
 package com.example.guest.myrestaurant.models;
 
+import org.parceler.Parcel;
+
 import java.util.ArrayList;
 
 /**
  * Created by Guest on 5/27/17.
  */
 
+@Parcel
 public class Restaurant {
     private String name;
     private String phone;
@@ -16,6 +19,8 @@ public class Restaurant {
     private double longitude;
     private ArrayList<String> address = new ArrayList<>();
     private ArrayList<String> categories = new ArrayList<>();
+
+    public Restaurant() { }
 
     public Restaurant(String name, String phone, String website, double rating, String imageUrl, double latitude, double longitude, ArrayList<String> address, ArrayList<String> categories) {
         this.name = name;

@@ -8,16 +8,14 @@
     android:paddingLeft="16dp"
     android:paddingRight="16dp"
     android:paddingTop="16dp"
-    tools:context="com.example.guest.myrestaurant.RestaurantsActivity">
+    tools:context="com.example.guest.myrestaurant.RestaurantsListActivity">
 
 
-    <ListView
+    <android.support.v7.widget.RecyclerView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/listView"
+        android:layout_height="match_parent"
         android:layout_below="@+id/locationTextView"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        android:id="@+id/recyclerView"/>
 
     <TextView
         android:id="@+id/locationTextView"

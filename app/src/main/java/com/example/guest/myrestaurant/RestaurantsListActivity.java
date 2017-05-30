@@ -1,16 +1,14 @@
 package com.example.guest.myrestaurant;
 
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
-
-import okhttp3.Call;
-import okhttp3.Callback;
 import android.widget.TextView;
 
+import com.example.guest.myrestaurant.adapters.RestaurantListAdapter;
 import com.example.guest.myrestaurant.models.Restaurant;
 import com.example.guest.myrestaurant.services.YelpService;
 
@@ -19,12 +17,15 @@ import java.util.ArrayList;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import okhttp3.Call;
+import okhttp3.Callback;
 import okhttp3.Response;
 
-public class RestaurantsActivity extends AppCompatActivity {
-    public static final String TAG = RestaurantsActivity.class.getSimpleName();
+public class RestaurantsListActivity extends AppCompatActivity {
+    public static final String TAG = RestaurantsListActivity.class.getSimpleName();
+    @Bind(R.id.recyclerView) RecyclerView mRecyclerView;
     @Bind(R.id.locationTextView) TextView mLocationTextView;
-    @Bind(R.id.listView) ListView mListView;
+    private RestaurantListAdapter mAdapter;
 
     public ArrayList<Restaurant> mRestaurants = new ArrayList<>();
 
@@ -55,16 +56,15 @@ public class RestaurantsActivity extends AppCompatActivity {
             public void onResponse(Call call, Response response) {
                 mRestaurants = yelpService.processResults(response);
 
-                RestaurantsActivity.this.runOnUiThread(new Runnable() {
+                RestaurantsListActivity.this.runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        String[] restaurantNames = new String[mRestaurants.size()];
-                        for(int i = 0; i < restaurantNames.length; i++) {
-                            restaurantNames[i] = mRestaurants.get(i).getName();
-                        }
-
-                        ArrayAdapter adapter = new ArrayAdapter(RestaurantsActivity.this, android.R.layout.simple_list_item_1, restaurantNames);
-                        mListView.setAdapter(adapter);
+                        mAdapter = new RestaurantListAdapter(getApplicationContext(), mRestaurants);
+                        mRecyclerView.setAdapter(mAdapter);
+                        RecyclerView.LayoutManager layoutManager =
+                                new LinearLayoutManager(RestaurantsListActivity.this);
+                        mRecyclerView.setLayoutManager(layoutManager);
+                        mRecyclerView.setHasFixedSize(true);
 
                         for(Restaurant restaurant : mRestaurants) {
                             Log.d(TAG, "Name: " + restaurant.getName());
@@ -88,16 +88,5 @@ public class RestaurantsActivity extends AppCompatActivity {
         });
     }
 }
-
-
-
-
-
-
-
-
-
-
-
 
 
